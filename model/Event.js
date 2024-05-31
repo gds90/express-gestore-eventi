@@ -32,7 +32,8 @@ class Event {
     static getReservations(eventId) {
         const event = this.findEventById(eventId);
         if (!event) {
-            return null;
+            res.status(404).json({ message: 'Non esiste un evento con quell\'ID' });
+            return;
         }
         const reservations = Reservation.getReservationsByEvent(eventId);
         return reservations;
