@@ -1,6 +1,3 @@
-// const path = require('path');
-// const fs = require('fs');
-
 const index = (req, res) => {
     //
 }
