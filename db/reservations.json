@@ -1,0 +1,9 @@
+[
+    {
+        "id": 1,
+        "firstName": "Giuseppe",
+        "lastName": "Rossi",
+        "email": "giuseppe.rossi@mail.com",
+        "eventId": 2
+    }
+]

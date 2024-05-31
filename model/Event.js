@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const Reservation = require('./Reservation.js');
 
 class Event {
     constructor(id, title, description, date, maxSeats) {
@@ -12,7 +13,7 @@ class Event {
 
     static getEvents() {
         const filePath = path.join(__dirname, '../db/events.json');
-        const fileData = fs.readFileSync(filePath, "utf-8");
+        const fileData = fs.readFileSync(filePath, 'utf-8');
         const events = JSON.parse(fileData);
         return events;
     }
@@ -23,9 +24,18 @@ class Event {
     }
 
     static findEventById(eventId) {
-        const events = Event.getEvents();
+        const events = this.getEvents();
         const event = events.find(e => e.id === parseInt(eventId));
         return event;
+    }
+
+    static getReservations(eventId) {
+        const event = this.findEventById(eventId);
+        if (!event) {
+            return null;
+        }
+        const reservations = Reservation.getReservationsByEvent(eventId);
+        return reservations;
     }
 }
 
