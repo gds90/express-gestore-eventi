@@ -14,13 +14,13 @@ const updateEvent = (updatedData) => {
 };
 
 const index = (req, res) => {
-    const { eventId, title, date } = req.query;
+    const { id, title, date } = req.query;
 
     let events = Event.getEvents();
 
     // Filtraggio per ID
-    if (eventId) {
-        const event = Event.findEventById(eventId);
+    if (id) {
+        const event = Event.findEventById(id);
         if (!event) {
             res.status(404).json({ message: 'Non esiste un evento con quell\'ID' });
             return;
@@ -69,20 +69,20 @@ const store = (req, res) => {
     const newEvent = new Event(id, title, description, date, maxSeats);
 
     save(newEvent);
-    res.json(newEvent);
+    res.json({ message: 'Evento aggiunto correttamente.', newEvent });
 }
 
 const update = (req, res) => {
-    const { event: eventId } = req.params;
+    const { event: id } = req.params;
     const { title, description, date, maxSeats } = req.body;
 
-    let event = Event.findEventById(eventId);
+    let event = Event.findEventById(id);
     if (!event) {
         res.status(404).json({ message: 'Non esiste un evento con quell\'ID' });
         return;
     }
-    event = updateEvent({ id: parseInt(eventId), title, description, date, maxSeats });
-    res.json(event);
+    event = updateEvent({ id: parseInt(id), title, description, date, maxSeats });
+    res.json({ message: 'Evento aggiornato correttamente.', event });
 }
 
 module.exports = {
