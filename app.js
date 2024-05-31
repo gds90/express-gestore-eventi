@@ -3,6 +3,7 @@ const port = process.env.port || 9000;
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const eventsRouter = require("./routers/eventsRouter.js");
 

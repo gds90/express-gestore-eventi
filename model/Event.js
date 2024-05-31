@@ -24,7 +24,7 @@ class Event {
 
     static findEventById(eventId) {
         const events = Event.getEvents();
-        const event = events.find(e => e.id === eventId);
+        const event = events.find(e => e.id === parseInt(eventId));
         return event;
     }
 }

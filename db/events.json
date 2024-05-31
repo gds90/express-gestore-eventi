@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "Titolo dell'evento",
+        "description": "Descrizione dell'evento",
+        "date": "2024-07-30",
+        "maxSeats": 500
+    },
+    {
+        "id": 2,
+        "title": "Festival della musica Neomelodica",
+        "description": "JammeJà",
+        "date": "2024-08-12",
+        "maxSeats": 50
+    }
+]
