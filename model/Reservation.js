@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const Event = require('./Event.js');
 
 class Reservation {
     constructor(id, firstName, lastName, email, eventId) {
@@ -77,16 +78,66 @@ class Reservation {
     }
 
     static saveReservation(newReservation) {
+        const events = Event.getEvents();
+        const event = events.find(e => e.id === newReservation.eventId);
+
+        // verifico l'esistenza dell'evento 
+        if (!event) {
+            throw new Error('L\'evento associato alla prenotazione non esiste');
+        }
+        // verifico se ci sono posti disponibili
+        if (event.maxSeats <= 0) {
+            throw new Error('Non ci sono più posti disponibili per questo evento');
+        }
+
+        const eventDate = new Date(event.date);
+        const currentDate = new Date();
+
+        // verifico che l'evento non sia già passato
+        if (eventDate < currentDate) {
+            throw new Error('Non è possibile aggiungere una prenotazione per un evento passato');
+        }
+
+        // salvo la prenotazione e diminuisco il numero di posti disponibili
         const reservations = this.getReservations();
         reservations.push(newReservation);
         this.saveReservations(reservations);
+
+        event.maxSeats--;
+        Event.saveEvents(events);
     }
 
     static deleteReservation(reservationId) {
-        const reservations = this.getReservations();
         const reservation = this.findReservationById(reservationId);
+
+        // verifico che esista una prenotazione con quell'ID
+        if (!reservation) {
+            throw new Error('La prenotazione non esiste');
+        }
+
+        const events = Event.getEvents();
+        const event = events.find(e => e.id === reservation.eventId);
+
+        // verifico l'esistenza dell'evento 
+        if (!event) {
+            throw new Error('L\'evento associato alla prenotazione non esiste');
+        }
+
+        const eventDate = new Date(event.date);
+        const currentDate = new Date();
+
+        // verifico che l'evento non sia già passato
+        if (eventDate < currentDate) {
+            throw new Error('Non è possibile rimuovere una prenotazione per un evento passato');
+        }
+
+        // salvo la prenotazione e diminuisco il numero di posti disponibili
+        const reservations = this.getReservations();
         reservations.splice(reservations.indexOf(reservation), 1);
         this.saveReservations(reservations);
+
+        event.maxSeats++;
+        Event.saveEvents(events);
     }
 }
 
