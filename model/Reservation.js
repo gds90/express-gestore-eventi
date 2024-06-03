@@ -10,6 +10,49 @@ class Reservation {
         this.eventId = eventId;
     }
 
+    setId(id) {
+        if (typeof id !== 'number') {
+            throw new Error('ID deve essere un numero');
+        }
+        this.id = id;
+    }
+
+    setFirstName(firstName) {
+        if (typeof firstName !== 'string' || firstName.trim() === '') {
+            throw new Error('Il nome deve essere una stringa');
+        }
+        this.firstName = firstName.trim();
+    }
+
+    setLastName(lastName) {
+        if (typeof lastName !== 'string' || lastName.trim() === '') {
+            throw new Error('Il cognome deve essere una stringa');
+        }
+        this.lastName = lastName.trim();
+    }
+
+    setEmail(email) {
+        if (typeof email !== 'string' || email.trim() === '') {
+            throw new Error('L\'email deve essere una stringa');
+        }
+        this.email = email.trim();
+    }
+
+    setEventId(eventId) {
+        if (typeof eventId !== 'number') {
+            throw new Error('L\'ID dell\'evento deve essere un numero');
+        }
+
+        const events = Event.getEvents();
+        const eventExists = events.find(e => e.id === eventId);
+
+        if (!eventExists) {
+            throw new Error('Non esisto un evento con l\'ID inserito');
+        }
+
+        this.eventId = eventId;
+    }
+
     static getReservations() {
         const filePath = path.join(__dirname, '../db/reservations.json');
         const fileData = fs.readFileSync(filePath, 'utf-8');
